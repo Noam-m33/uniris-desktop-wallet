@@ -1,0 +1,13 @@
+directories:
+  output: dist
+  buildResources: assets
+files:
+  - filter:
+      - build/**/*
+extraMetadata:
+  main: build/electron.js
+appId: uniris
+productName: Uniris
+icon: public/favicon.png
+extends: react-cra
+electronVersion: 11.0.1
