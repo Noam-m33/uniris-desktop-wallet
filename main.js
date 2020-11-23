@@ -23,7 +23,7 @@ function createWindow () {
     open(url);
   });
 
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 }
 
 app.whenReady().then(createWindow)
