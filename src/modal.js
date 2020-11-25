@@ -13,14 +13,14 @@ export default class Modal extends React.Component {
         this.props.close()
     }
     
-    handleSubmit() {
-        this.props.close()
+    handleSubmit(val) {
+        this.props.close(val)
     }
 
     render() {
 
         const childrenWithProps = React.Children.map(this.props.children, child => {
-            const props = { onSubmit: this.handleClose.bind(this) };
+            const props = { onSubmit: this.handleSubmit.bind(this) };
             if (React.isValidElement(child)) {
                 return React.cloneElement(child, props);
             }

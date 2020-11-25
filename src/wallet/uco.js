@@ -22,8 +22,15 @@ class UCO extends React.Component {
         this.setState({ balance: balance.uco, transactions: transactions.filter(x => x.type === "transfer" && x.data.ledger.uco.transfers.length > 0) })
     }
 
-    closeTransferForm() {
-        this.setState({transferForm: false})
+    closeTransferForm(transfer) {
+        if (transfer !== undefined) {
+            let transactions = this.state.transactions
+            transactions.push(transfer)
+            this.setState({ transactions: transactions, transferForm: false })
+        }
+        else {
+            this.setState({transferForm: false})
+        }
     }
 
     handleOpenTransferForm() {
@@ -84,7 +91,7 @@ class UCO extends React.Component {
                     </div>
                 </div>
                 <Modal active={this.state.transferForm} close={this.closeTransferForm.bind(this)} >
-                    <UCOTransfersForm address={this.props.address} endpoint={this.props.endpoint} />
+                    <UCOTransfersForm address={this.props.address} />
                 </Modal>
             </div>
         )

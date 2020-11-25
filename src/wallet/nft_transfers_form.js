@@ -1,6 +1,8 @@
 import React from 'react'
 
 import { newTransactionBuilder, getTransactionIndex, sendTransaction } from 'uniris'
+import { notifyAddressReplication } from '../api'
+
 import OriginSeedConfirmation from './originSeedConfirmation';
 import TransferForm from './nft_transfer_form'
 
@@ -36,12 +38,16 @@ export default class NFTTransfersForm extends React.Component {
             .build(sessionStorage.getItem("transaction_chain_seed"), txIndex)
             .originSign(originPrivateKey)
 
+        const transfer = { address: tx.address.toString('hex'), timestamp: tx.timestamp, data: { ledger: { nft: { transfers: this.state.transfers }}}}
+        notifyAddressReplication(tx.address.toString('hex')).then(() => {
+            this.props.onSubmit(transfer)
+        })
+
         const data = await sendTransaction(tx, this.state.endpoint)
         if (data.errors) {
             console.error(data.errors)
             alert("An error ocurred")
         }
-        this.props.onSubmit()
     }
 
     handleNewTransfer({ address, amount, nft }) {

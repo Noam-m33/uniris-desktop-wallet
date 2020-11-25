@@ -9,7 +9,13 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.0",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "react-router-dom": "^5.2.0",
+    "sass": "^1.29.0",
+    "uniris": "^1.2.2",
+    "phoenix": "^1.5.7",
+    "@absinthe/socket": "^0.2.1",
+    "bulma": "^0.9.1"
   },
   "main": "main.js",
   "homepage": "./",
@@ -46,13 +52,9 @@
     ]
   },
   "devDependencies": {
-    "bulma": "^0.9.1",
     "electron": "^11.0.1",
     "electron-is-dev": "^1.2.0",
     "open": "^7.3.0",
-    "react-router-dom": "^5.2.0",
-    "sass": "^1.29.0",
-    "uniris": "^1.2.1",
     "webpack": "^4.44.2"
   }
 }

@@ -18,24 +18,39 @@ class NFT extends React.Component {
     }
 
     async componentDidMount() {
+        await this.loadTokens()
+        await this.loadTransactions()
+    }
+
+    async loadTokens() {
+        console.log(this.props.address)
         let { nft: balances} = await fetchBalance(this.props.address)
         const nft_promises = await balances.map(async (nft) => {
             const content = await getTransactionContent(nft.address)
             const string = Buffer.from(content, "hex").toString()
-            const tokenName = this.regexName(string)
+            const tokenName = this.regexName(string) || nft.address
             return { name: tokenName, amount: nft.amount, address: nft.address }
         })
 
         balances = await Promise.all(nft_promises)
 
+        this.setState({ balances: balances })
+    }
+
+    async loadTransactions() {
         const transactions = await getTransactions(this.props.address)
-        this.setState({ balances: balances, transactions: transactions.filter(t => t.type === "transfer" && t.data.ledger.nft.transfers.length > 0)})
+        this.setState({ transactions: transactions.filter(t => t.type === "transfer" && t.data.ledger.nft.transfers.length > 0)})
     }
 
     regexName(content) {
         const regex = /(?<=name: ).*/g
         const match = content.match(regex)
-        return match[0]
+        if (match) {
+            return match[0]
+        }
+        else {
+            return undefined
+        }
     }
 
     openIssueForm() {
@@ -46,14 +61,26 @@ class NFT extends React.Component {
         this.setState({ transferFormActive: true })
     }
 
-    closeTransformForm() {
-        this.setState({ transferFormActive: false })
+    closeTransformForm(transfer) {
+        if (transfer !== undefined) {
+            let transactions = this.state.transactions
+            transactions.push(transfer)
+            this.setState({ transactions: transactions, transferFormActive: false })
+        }
+        else {
+            this.setState({transferFormActive: false})
+        }
     }
     
-    async closeIssueForm() {
-        this.setState({issueFormActive: false})
-        const { nft: balances} = await fetchBalance(this.props.address)
-        this.setState({ balances: balances})
+    async closeIssueForm(nft) {
+        if (nft !== undefined) {
+            let balances = this.state.balances
+            balances.push(nft)
+            this.setState({ balances: balances, issueFormActive: false })
+        }
+        else {
+            this.setState({issueFormActive: false})
+        }
     }
 
     render() {
@@ -112,7 +139,8 @@ class NFT extends React.Component {
                                             <p className="heading">Transfers</p>
                                             <p className="">
                                                 {tx.data.ledger.nft.transfers.map(transfer => {
-                                                    const { name: nft_name} = this.state.balances.find((nft) => nft.address === transfer.nft)
+                                                    const nft = this.state.balances.find((nft) => nft.address === transfer.nft)
+                                                    const nft_name = nft ? nft.name || nft.address : transfer.nft
                                                     return (
                                                         <div className="tag">{transfer.amount.toPrecision(6)} {nft_name}</div>
                                                     )

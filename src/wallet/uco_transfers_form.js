@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { newTransactionBuilder, getTransactionIndex, sendTransaction } from 'uniris'
+import { notifyAddressReplication } from '../api'
 
 import OriginSeedConfirmation from './originSeedConfirmation';
 import TransferForm from './uco_transfer_form'
@@ -10,12 +11,13 @@ export default class UCOTransfersForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            transfers: []
+            transfers: [],
+            endpoint: localStorage.getItem("node_endpoint")
         }
     }
 
     async handleConfirm(originPrivateKey) {
-        const txIndex = await getTransactionIndex(this.props.address, this.props.endpoint)
+        const txIndex = await getTransactionIndex(this.props.address, this.state.endpoint)
         let builder = newTransactionBuilder("transfer")
 
         this.state.transfers.forEach((transfer) => {
@@ -25,14 +27,18 @@ export default class UCOTransfersForm extends React.Component {
         const tx = builder
             .build(sessionStorage.getItem("transaction_chain_seed"), txIndex)
             .originSign(originPrivateKey)
+
+        const transfer = { address: tx.address.toString('hex'), timestamp: tx.timestamp, data: { ledger: { uco: { transfers: this.state.transfers }}}}
+        notifyAddressReplication(tx.address.toString('hex')).then(() => {
+            this.props.onSubmit(transfer)
+        })
         
-        const data = await sendTransaction(tx, this.props.endpoint)
+        const data = await sendTransaction(tx, this.state.endpoint)
         if (data.errors) {
                 console.error(data.errors)
                 alert("An error ocurred")
         }
         this.setState({ transfers: [] })
-        this.props.onSubmit()
     }
 
     handleNewTransfer({ address, amount }) {

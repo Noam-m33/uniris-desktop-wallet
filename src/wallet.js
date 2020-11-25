@@ -8,6 +8,7 @@ import { deriveAddress } from 'uniris';
 import Dashboard from './wallet/dashboard';
 import UCO from './wallet/uco';
 import NFT from './wallet/nft';
+import Advanced from './advanced';
 import { lastAddress } from "./api";
 
 class Wallet extends React.Component {
@@ -48,23 +49,27 @@ class Wallet extends React.Component {
                 <div className="columns full-height">
                     <div className="column is-3 sidebar pl-6 pr-6 dark-background">
                         <ul>
-                            <li className={this.menuClassNames("dashboard")} onClick={this.handleClick.bind(this, "dashboard")}><a>Dashboard</a></li>
-                            <li className={this.menuClassNames("UCO")} onClick={this.handleClick.bind(this, "UCO")}><a>UCO</a></li>
-                            <li className={this.menuClassNames("NFT")} onClick={this.handleClick.bind(this, "NFT")}><a>NFT</a></li>
+                            <li className={this.menuClassNames("dashboard")} onClick={this.handleClick.bind(this, "dashboard")}><button className="no-button">Dashboard</button></li>
+                            <li className={this.menuClassNames("UCO")} onClick={this.handleClick.bind(this, "UCO")}><button className="no-button">UCO</button></li>
+                            <li className={this.menuClassNames("NFT")} onClick={this.handleClick.bind(this, "NFT")}><button className="no-button">NFT</button></li>
+                            <li className={this.menuClassNames("advanced")} onClick={this.handleClick.bind(this, "advanced")}><button className="no-button">Advanced</button></li>
                         </ul>
                     </div>
                     <div className="column is-9 p-6">
                         <div className="container">
                             { this.state.section === "dashboard" &&
-                                <Dashboard endpoint={this.state.endpoint} address={this.state.address} />
+                                <Dashboard address={this.state.address} />
                             }
 
                             { this.state.section === "UCO" &&
-                                <UCO endpoint={this.state.endpoint} address={this.state.address} />
+                                <UCO address={this.state.address} />
                             }    
 
                             { this.state.section === "NFT" &&
-                                <NFT endpoint={this.state.endpoint} address={this.state.address} />
+                                <NFT address={this.state.address} />
+                            } 
+                            { this.state.section === "advanced" &&
+                                <Advanced />
                             }                               
                         </div>
                     </div>

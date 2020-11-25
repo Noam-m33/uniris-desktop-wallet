@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { newTransactionBuilder, getTransactionIndex, sendTransaction } from 'uniris'
+import { notifyAddressReplication } from '../api'
 import OriginSeedConfirmation from './originSeedConfirmation';
 
 export default class NFTIssueForm extends React.Component {
@@ -35,13 +36,17 @@ export default class NFTIssueForm extends React.Component {
             .build(sessionStorage.getItem("transaction_chain_seed"), txIndex)
             .originSign(originPrivateKey)
 
+        const nft = { address: tx.address.toString('hex'), name: this.state.name, amount: parseFloat(this.state.supply) }
+        notifyAddressReplication(tx.address.toString('hex')).then(() => {
+            this.setState({supply: 0, name: ""})
+            this.props.onSubmit(nft)
+        })
+
         const data = await sendTransaction(tx, this.state.endpoint)
         if (data.errors) {
             console.error(data.errors)
             alert("An error ocurred")
         }
-        this.setState({supply: 0, name: ""})
-        this.props.onSubmit()
     }
 
     render() {

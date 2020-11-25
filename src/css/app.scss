@@ -36,21 +36,20 @@ button {
             padding-bottom: 10px;
             margin-top: 2em;
             &.is-active {
-                a {
+                button {
                     color: #fff; 
-                    
                 }
                 border-bottom: 2px solid #fff;
             }
 
             &:hover {
                 border-bottom: 2px solid #fff;
-                a {
+                button {
                     color: #fff; 
                 }
             }
 
-            a {
+            button {
                 color: #ffffff6e;
             }
         }
@@ -83,4 +82,16 @@ button {
     margin: auto;
     margin-top: 6em;
     width: 20%;
+}
+
+.no-button  {
+    border: none;
+    background: none;
+    color: inherit;
+    font-size: inherit;
+
+    &:focus {
+        border: none;
+        outline: 0;
+    }
 }

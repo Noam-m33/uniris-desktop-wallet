@@ -35,7 +35,7 @@ class Dashboard extends React.Component {
                 const nft_promises = await balance.nft.map(async (nft) => {
                     const content = await getTransactionContent(nft.address)
                     const string = Buffer.from(content, "hex").toString()
-                    const tokenName = this.regexName(string)
+                    const tokenName = this.regexName(string) || nft.address
                     return { name: tokenName, amount: nft.amount, address: nft.address }
                 })
 
@@ -51,7 +51,12 @@ class Dashboard extends React.Component {
     regexName(content) {
         const regex = /(?<=name: ).*/g
         const match = content.match(regex)
-        return match[0]
+        if (match) {
+            return match[0]
+        }
+        else {
+            return undefined
+        }
     }
 
     render() {

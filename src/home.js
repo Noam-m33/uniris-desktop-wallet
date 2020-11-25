@@ -8,7 +8,8 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            seed: ''
+            seed: '',
+            endpoint: localStorage.getItem("node_endpoint")
         }
     }
 
@@ -21,6 +22,12 @@ class Home extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         this.props.history.push('/wallet');
+    }
+
+    handleChangeEndpoint(event) {
+        const endpoint = event.target.value
+        localStorage.setItem("node_endpoint", endpoint)
+        this.setState({ endpoint: endpoint })
     }
 
     render() {
@@ -54,6 +61,12 @@ class Home extends React.Component {
                                         <div className="columns">
                                             <div className="column">
                                                 <button className="button is-fullwidth is-primary is-outlined">Enter</button>
+                                            </div>
+                                        </div>
+                                        <div className="columns">
+                                            <div className="column">
+                                                <small className="is-size-7">Connected to the endpoint</small>
+                                                <input type="text" className="input is-small" value={this.state.endpoint} onChange={this.handleChangeEndpoint.bind(this)}/>
                                             </div>
                                         </div>
                                     </form>
