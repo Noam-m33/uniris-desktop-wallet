@@ -60,6 +60,7 @@ class Dashboard extends React.Component {
     }
 
     render() {
+        const endpoint = localStorage.getItem("node_endpoint")
         return (
             <div className="columns is-flex-wrap-wrap">
                 <div className="column is-7-tablet is-4-desktop is-2-widescreen">
@@ -75,7 +76,7 @@ class Dashboard extends React.Component {
                                 <p className="title heading has-text-black is-size-4">{ nft.name.slice(0, 7)} {nft.name.length > 7 ? "..." : ""} (NFT)</p>
                                 <p>{nft.amount.toPrecision(6)}</p>
                                 <small><em>
-                                <a className="link" rel="noreferrer" target="_blank" href={`${this.props.endpoint}/explorer/transaction/${nft.address}`}>{nft.address.slice(0, 18)}...</a></em></small>
+                                <a className="link" rel="noreferrer" target="_blank" href={`${endpoint}/explorer/transaction/${nft.address}`}>{nft.address.slice(0, 18)}...</a></em></small>
                             </div>
                         </div>
                     )

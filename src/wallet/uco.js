@@ -38,12 +38,13 @@ class UCO extends React.Component {
     }
 
     render() {
+        const endpoint = localStorage.getItem("node_endpoint")
         return (
             <div className="box">
                 <div className="columns">
                     <div className="column is-8-tablet">
                         <p className="heading">Address</p>
-                        <a className="link" target="_blank" rel="noreferrer" href={`${this.props.endpoint}/explorer/transaction/${this.props.address}`}>
+                        <a className="link" target="_blank" rel="noreferrer" href={`${endpoint}/explorer/transaction/${this.props.address}`}>
                             <span className="is-hidden-mobile is-hidden-desktop-only">{this.props.address}</span>
                             <span className="is-hidden-widescreen">{this.props.address.slice(0, 40)}...</span>
                         </a>
@@ -67,7 +68,7 @@ class UCO extends React.Component {
                                     <div className="columns">
                                         <div className="column is-5">
                                             <p className="heading">To</p>
-                                            <a className="link" rel="noreferrer" target="_blank" href={`${this.props.endpoint}/explorer/transaction/${tx.address}`}>
+                                            <a className="link" rel="noreferrer" target="_blank" href={`${endpoint}/explorer/transaction/${tx.address}`}>
                                                 <span className="is-hidden-mobile is-hidden-desktop-only">{tx.address.slice(0, 35)}...</span>
                                                 <span className="is-hidden-widescreen">{tx.address.slice(0, 20)}...</span>
                                             </a>

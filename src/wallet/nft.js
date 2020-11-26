@@ -84,6 +84,7 @@ class NFT extends React.Component {
     }
 
     render() {
+        const endpoint = localStorage.getItem("node_endpoint")
         return (
             <div className="box">
                 <div className="columns">
@@ -103,7 +104,7 @@ class NFT extends React.Component {
                                 <div className="box columns mt-2 mr-2 ml-2" key={i}>
                                    <div className="column is-10">
                                        <p className="heading">{nft.name}</p>
-                                       <a className="link" rel="noreferrer" target="_blank" href={`${this.props.endpoint}/explorer/transaction/${nft.address}`}>
+                                       <a className="link" rel="noreferrer" target="_blank" href={`${endpoint}/explorer/transaction/${nft.address}`}>
                                             <span className="is-hidden-mobile is-hidden-desktop-only">{nft.address}</span>
                                             <span className="is-hidden-widescreen">{nft.address.slice(0, 40)}...</span>
                                        </a>
@@ -126,7 +127,7 @@ class NFT extends React.Component {
                                     <div className="columns">
                                         <div className="column is-5">
                                             <p className="heading">To</p>
-                                            <a className="link" rel="noreferrer" target="_blank" href={`${this.props.endpoint}/explorer/transaction/${tx.address}`}>
+                                            <a className="link" rel="noreferrer" target="_blank" href={`${endpoint}/explorer/transaction/${tx.address}`}>
                                                 <span className="is-hidden-mobile is-hidden-desktop-only">{tx.address.slice(0, 30)}...</span>
                                                 <span className="is-hidden-widescreen">{tx.address.slice(0, 20)}...</span>
                                             </a>
